@@ -1,0 +1,13 @@
+name: petit_telephone
+
+services:
+  pbx:
+    build: .
+    container_name: petit-telephone
+    restart: unless-stopped
+    # Host networking: SIP puts the PBX's own address in Contact/Via/SDP,
+    # so it must see the real LAN IP, not a Docker-internal one.
+    # Listens on 5060/udp (SIP) and 20000-20100/udp (RTP, see yrtpchan.conf).
+    network_mode: host
+    volumes:
+      - ./conf:/etc/yate:ro

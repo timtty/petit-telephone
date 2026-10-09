@@ -1,0 +1,23 @@
+# Test overlay: a "phones" container that registers two softphones
+# (555, 888) to the PBX and places a call between them on demand.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.test.yml up -d
+#   ./test/call.sh
+#
+services:
+  pbx:
+    # join the compose network instead of the host's, so the phones
+    # container can reach it as "pbx"
+    network_mode: !reset null
+    volumes:
+      # shadow the real extension passwords with test ones
+      - ./test/regfile.test.conf:/etc/yate/regfile.conf:ro
+
+  phones:
+    build: .
+    container_name: petit-telephone-phones
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5038:5038"   # rmanager, used by call.sh
+    volumes:
+      - ./test/phones-conf:/etc/yate:ro

@@ -1,0 +1,26 @@
+; Extensions (softphone accounts).
+; One section per extension; the section name is both the SIP username
+; the softphone registers with and the number other phones dial.
+; Copy to regfile.conf, adjust, then restart the container.
+
+[general]
+; call.route priority: after regexroute (40), which handles auth + 600
+route=50
+
+; callername: caller name shown when this extension calls out.
+;
+; Set a password per extension. A short, easy-to-key one shared by all
+; handsets is fine on a closed LAN; use strong ones if the PBX is ever
+; reachable from anywhere else.
+
+[100]
+password=CHANGE_ME
+callername=Main
+
+[555]
+password=CHANGE_ME
+callername=TT
+
+[888]
+password=CHANGE_ME
+callername=CC
